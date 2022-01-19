@@ -16,7 +16,7 @@ Gem::Specification.new do |spec|
   spec.description = "Implement texter classes for sending SMS messages in similar way to how e-mails are sent with ActionMailer-based mailers. Take advantage of e-mail proxying and enhanced phone number parsing, among others."
 
   spec.files            = Dir["lib/**/*.rb"]
-  spec.has_rdoc         = false
+  #spec.has_rdoc         = false
   spec.extra_rdoc_files = ["README.md"]
   spec.test_files       = spec.files.grep(%r{^(test|spec|features)/})
   spec.require_paths    = ["lib"]
@@ -31,10 +31,12 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'twilio-ruby',               '~> 3.12'
   spec.add_development_dependency 'nexmo',                     '~> 2.0'
   spec.add_development_dependency 'appraisal',                 '~> 2.1'
+  spec.add_development_dependency 'rubocop', '1.22.3'
+  spec.add_development_dependency 'pry-byebug'
 
-  spec.add_runtime_dependency 'actionmailer',    '>= 4.0'
-  spec.add_runtime_dependency 'activejob',       '>= 4.2'
-  spec.add_runtime_dependency 'activesupport',   '>= 4.2'
+  spec.add_runtime_dependency 'actionmailer',    '= 5.2.4.2'
+  spec.add_runtime_dependency 'activejob',       '= 5.2.4.2'
+  spec.add_runtime_dependency 'activesupport',   '= 5.2.4.2'
   spec.add_runtime_dependency 'phony',           '~> 2.8'
   spec.add_runtime_dependency 'render_anywhere', '~> 0.0'
   spec.add_runtime_dependency 'nokogiri',        '~> 1.10.4'
