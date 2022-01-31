@@ -12,18 +12,17 @@ describe Textris::Delivery::Mail do
   let(:delivery) { Textris::Delivery::Mail.new(message) }
 
   before do
-    Object.send(:remove_const, :Rails) if defined?(Rails)
-
     module MyAppName
       class Application < OpenStruct; end
     end
 
-    Rails = OpenStruct.new(
+
+    stub_const("Rails", OpenStruct.new(
       :application => MyAppName::Application.new(
         :config => OpenStruct.new
       ),
       :env => 'test'
-    )
+    ))
 
     class FakeMail
       def self.deliveries
@@ -52,10 +51,6 @@ describe Textris::Delivery::Mail do
         :subject => subject,
         :body    => body)
     end
-  end
-
-  after do
-    Object.send(:remove_const, :Rails) if defined?(Rails)
   end
 
   it 'responds to :deliver_to_all' do

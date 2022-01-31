@@ -79,7 +79,13 @@ module Textris
       def get_rails_variable(var)
         case var
         when 'app'
-          Rails.application.class.parent_name
+          klass = Rails.application.class
+          # TODO: required for Rails 5.2 support. Once fully 6.0+, drop #parent_name support
+          if klass.respond_to? :module_parent_name
+            klass.module_parent_name
+          else
+            klass.parent_name
+          end
         when 'env'
           Rails.env
         end

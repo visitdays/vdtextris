@@ -26,18 +26,14 @@ describe Textris::Delivery::Log do
       end
     end
 
-    Object.send(:remove_const, :Rails) if defined?(Rails)
-
-    Rails = OpenStruct.new(
+    fake_rails = OpenStruct.new(
       :logger => logger,
       :application => OpenStruct.new(
         :config => OpenStruct.new
       )
     )
-  end
 
-  after do
-    Object.send(:remove_const, :Rails) if defined?(Rails)
+    stub_const("Rails", fake_rails)
   end
 
   it 'responds to :deliver_to_all' do

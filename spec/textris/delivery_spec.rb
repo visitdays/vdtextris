@@ -1,8 +1,6 @@
 describe Textris::Delivery do
   describe '#get' do
     before do
-      Object.send(:remove_const, :Rails) if defined?(Rails)
-
       class FakeEnv
         def initialize(options = {})
           self.name = 'development'
@@ -36,7 +34,7 @@ describe Textris::Delivery do
         end
       end
 
-      Rails = OpenStruct.new(
+      stub_const "Rails", OpenStruct.new(
         :application => OpenStruct.new(
           :config => OpenStruct.new(
             :textris_delivery_method => ['mail', 'test']
@@ -46,10 +44,6 @@ describe Textris::Delivery do
           :test? => false
         )
       )
-    end
-
-    after do
-      Object.send(:remove_const, :Rails) if defined?(Rails)
     end
 
     it 'maps delivery methods from Rails config to delivery classes' do

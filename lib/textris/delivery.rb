@@ -3,7 +3,7 @@ module Textris
     module_function
 
     def get
-      methods = Rails.application.config.try(:textris_delivery_method)
+      methods = ::Rails.application.config.try(:textris_delivery_method)
       methods = [*methods].compact
       if methods.blank?
         if Rails.env.development?
