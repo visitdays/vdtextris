@@ -35,6 +35,7 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'pry-byebug'
 
   spec.add_runtime_dependency 'actionmailer',    '>= 5.2.4.2', '< 7'
+  spec.add_runtime_dependency 'activejob',       '>= 5.2.4.2', '< 7'
   spec.add_runtime_dependency 'activesupport',   '>= 5.2.4.2', '< 7'
   spec.add_runtime_dependency 'phony',           '~> 2.8'
   spec.add_runtime_dependency 'nokogiri',        '~> 1.10.4'

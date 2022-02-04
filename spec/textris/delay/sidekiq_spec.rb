@@ -1,6 +1,6 @@
 describe Textris::Delay::Sidekiq do
   before do
-    class MyTexter < Textris::Base
+    class SidekiqTexter < Textris::Base
       def delayed_action(phone, body)
         text :to => phone, :body => body
       end
@@ -55,9 +55,9 @@ describe Textris::Delay::Sidekiq do
   context 'sidekiq gem present' do
     describe '#delay' do
       it 'schedules action with proper params' do
-        MyTexter.delay.delayed_action('48111222333', 'Hi')
+        SidekiqTexter.delay.delayed_action('48111222333', 'Hi')
 
-        expect_any_instance_of(MyTexter).to receive(:text).with(
+        expect_any_instance_of(SidekiqTexter).to receive(:text).with(
           :to => "48111222333", :body => "Hi").and_call_original
         expect_any_instance_of(Textris::Message).to receive(:deliver)
 
@@ -67,9 +67,9 @@ describe Textris::Delay::Sidekiq do
       it 'serializes and deserializes ActiveRecord records' do
         user = XModel.new('48666777888')
 
-        MyTexter.delay.serialized_action(user)
+        SidekiqTexter.delay.serialized_action(user)
 
-        expect_any_instance_of(MyTexter).to receive(:text).with(
+        expect_any_instance_of(SidekiqTexter).to receive(:text).with(
           :to => "48666777888", :body => "Hello").and_call_original
         expect_any_instance_of(Textris::Message).to receive(:deliver)
 
@@ -81,9 +81,9 @@ describe Textris::Delay::Sidekiq do
       it 'serializes and deserializes ActiveRecord relations' do
         users = XRelation.new(XModel, [XModel.new('48666777888'), XModel.new('48666777889')])
 
-        MyTexter.delay.serialized_array_action(users)
+        SidekiqTexter.delay.serialized_array_action(users)
 
-        expect_any_instance_of(MyTexter).to receive(:text).with(
+        expect_any_instance_of(SidekiqTexter).to receive(:text).with(
           :to => "48666777888", :body => "Hello all").and_call_original
         expect_any_instance_of(Textris::Message).to receive(:deliver)
 
@@ -95,9 +95,9 @@ describe Textris::Delay::Sidekiq do
       it 'serializes and deserializes ActiveRecord object arrays' do
         users = [XModel.new('48666777888'), XModel.new('48666777889')]
 
-        MyTexter.delay.serialized_array_action(users)
+        SidekiqTexter.delay.serialized_array_action(users)
 
-        expect_any_instance_of(MyTexter).to receive(:text).with(
+        expect_any_instance_of(SidekiqTexter).to receive(:text).with(
           :to => "48666777888", :body => "Hello all").and_call_original
         expect_any_instance_of(Textris::Message).to receive(:deliver)
 
@@ -109,7 +109,7 @@ describe Textris::Delay::Sidekiq do
       it 'does not serialize wrong ActiveRecord object arrays' do
         users = [XModel.new('48666777888'), YModel.new('48666777889')]
 
-        MyTexter.delay.serialized_array_action(users)
+        SidekiqTexter.delay.serialized_array_action(users)
 
         expect do
           Textris::Delay::Sidekiq::Worker.drain
@@ -122,7 +122,7 @@ describe Textris::Delay::Sidekiq do
         Object.send(:remove_const, :XRelation)
         Object.send(:remove_const, :ActiveRecord)
 
-        MyTexter.delay.serialized_array_action('x')
+        SidekiqTexter.delay.serialized_array_action('x')
 
         expect do
           Textris::Delay::Sidekiq::Worker.drain
@@ -132,9 +132,9 @@ describe Textris::Delay::Sidekiq do
 
     describe '#delay_for' do
       it 'schedules action with proper params and execution time' do
-        MyTexter.delay_for(300).delayed_action('48111222333', 'Hi')
+        SidekiqTexter.delay_for(300).delayed_action('48111222333', 'Hi')
 
-        expect_any_instance_of(MyTexter).to receive(:text).with(
+        expect_any_instance_of(SidekiqTexter).to receive(:text).with(
           :to => "48111222333", :body => "Hi").and_call_original
         expect_any_instance_of(Textris::Message).to receive(:deliver)
 
@@ -147,7 +147,7 @@ describe Textris::Delay::Sidekiq do
 
       it 'raises with wrong interval' do
         expect do
-          MyTexter.delay_for('x')
+          SidekiqTexter.delay_for('x')
         end.to raise_error(ArgumentError)
       end
     end
@@ -156,10 +156,10 @@ describe Textris::Delay::Sidekiq do
       it 'schedules action with proper params and execution time' do
         # sidekiq behaves differently if we're not queueing into the future
         expected_scheduled_time = Time.new(Time.now.year + 1, 1, 1)
-        MyTexter.delay_until(expected_scheduled_time).delayed_action(
+        SidekiqTexter.delay_until(expected_scheduled_time).delayed_action(
           '48111222333', 'Hi')
 
-        expect_any_instance_of(MyTexter).to receive(:text).with(
+        expect_any_instance_of(SidekiqTexter).to receive(:text).with(
           :to => "48111222333", :body => "Hi").and_call_original
         expect_any_instance_of(Textris::Message).to receive(:deliver)
 
@@ -172,7 +172,7 @@ describe Textris::Delay::Sidekiq do
 
       it 'raises with wrong timestamp' do
         expect do
-          MyTexter.delay_until(nil)
+          SidekiqTexter.delay_until(nil)
         end.to raise_error(ArgumentError)
       end
     end
@@ -190,7 +190,7 @@ describe Textris::Delay::Sidekiq do
     describe '#delay' do
       it 'raises' do
         expect do
-          MyTexter.delay
+          SidekiqTexter.delay
         end.to raise_error(LoadError)
       end
     end
@@ -198,7 +198,7 @@ describe Textris::Delay::Sidekiq do
     describe '#delay_for' do
       it 'raises' do
         expect do
-          MyTexter.delay_for(300)
+          SidekiqTexter.delay_for(300)
         end.to raise_error(LoadError)
       end
     end
@@ -206,7 +206,7 @@ describe Textris::Delay::Sidekiq do
     describe '#delay_until' do
       it 'raises' do
         expect do
-          MyTexter.delay_until(Time.new(2005, 1, 1))
+          SidekiqTexter.delay_until(Time.new(2005, 1, 1))
         end.to raise_error(LoadError)
       end
     end

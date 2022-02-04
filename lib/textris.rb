@@ -25,18 +25,18 @@ require 'textris/base'
 require 'textris/phone_formatter'
 require 'textris/message'
 
-# begin
-#   require 'active_job'
-# rescue LoadError
-#   require 'textris/delay/active_job/missing'
+begin
+  require 'active_job'
+rescue LoadError
+  require 'textris/delay/active_job/missing'
 
-#   Textris::Message.include(Textris::Delay::ActiveJob::Missing)
-# else
-#   require 'textris/delay/active_job'
-#   require 'textris/delay/active_job/job'
+  Textris::Message.include(Textris::Delay::ActiveJob::Missing)
+else
+  require 'textris/delay/active_job'
+  require 'textris/delay/active_job/job'
 
-#   Textris::Message.include(Textris::Delay::ActiveJob)
-# end
+  Textris::Message.include(Textris::Delay::ActiveJob)
+end
 
 require 'textris/delivery'
 require 'textris/delivery/base'
