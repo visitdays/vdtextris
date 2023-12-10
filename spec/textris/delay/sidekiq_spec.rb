@@ -109,11 +109,11 @@ describe Textris::Delay::Sidekiq do
       it 'does not serialize wrong ActiveRecord object arrays' do
         users = [XModel.new('48666777888'), YModel.new('48666777889')]
 
-        SidekiqTexter.delay.serialized_array_action(users)
 
         expect do
+          SidekiqTexter.delay.serialized_array_action(users)
           Textris::Delay::Sidekiq::Worker.drain
-        end.to raise_error(NoMethodError)
+        end.to raise_error(ArgumentError)
       end
 
       it 'does not raise when ActiveRecord not loaded' do
