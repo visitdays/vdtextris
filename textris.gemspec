@@ -38,6 +38,6 @@ Gem::Specification.new do |spec|
   spec.add_runtime_dependency 'activejob',       '>= 5.2.4.2', '< 7'
   spec.add_runtime_dependency 'activesupport',   '>= 5.2.4.2', '< 7'
   spec.add_runtime_dependency 'phony',           '~> 2.8'
-  spec.add_runtime_dependency 'nokogiri',        '~> 1.10.4'
+  spec.add_runtime_dependency 'nokogiri',        '~> 1.15.5'
   spec.add_runtime_dependency 'loofah', '~>2.19.1'
 end
