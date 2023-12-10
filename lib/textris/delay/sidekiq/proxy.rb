@@ -10,7 +10,7 @@ module Textris
 
         def method_missing(method_name, *args)
           args = ::Textris::Delay::Sidekiq::Serializer.serialize(args)
-          args = [@texter, method_name, args]
+          args = [@texter, method_name.to_s, args]
 
           if @perform_in
             ::Textris::Delay::Sidekiq::Worker.perform_in(@perform_in, *args)
